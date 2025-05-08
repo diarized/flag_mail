@@ -48,4 +48,4 @@ def main(mbox_path):
         print(decision)
 
 if __name__ == "__main__":
-    main("/tmp/imap.gmail.mbox")
+    main("/tmp/imap.stonith.mbox")
