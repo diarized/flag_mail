@@ -2,6 +2,8 @@
 
 import mailbox
 import requests
+import email.utils
+from datetime import datetime
 
 OLLAMA_API_URL = "http://localhost:11434/api/generate"
 MODEL_NAME = "qwen3:14b"  # Replace with the model you've loaded
@@ -41,7 +43,30 @@ def parse_email(msg):
 
 def main(mbox_path):
     mbox = mailbox.mbox(mbox_path)
-    for i, msg in enumerate(mbox):
+    for i in range(len(mbox)):
+        try:
+            msg = mbox[i]
+        except UnicodeDecodeError as e:
+            print(f"Skipping email #{i+1} due to read error: {e}")
+            continue
+
+        date_hdr = msg.get('Date')
+        if not date_hdr:
+            continue  # Skip if no date
+        try:
+            print(date_hdr)
+            msg_dt = email.utils.parsedate_to_datetime(date_hdr)
+            # Convert to local timezone if necessary
+            if msg_dt.tzinfo is not None:
+                today = datetime.now(msg_dt.tzinfo).date()
+            else:
+                today = datetime.today().date()
+            if msg_dt.date() != today:
+                continue
+        except Exception:
+            raise
+            continue  # Skip if can't parse date
+
         print(f"\n--- Email #{i+1} ---")
         email_text = parse_email(msg)
         decision = query_ollama(email_text)
