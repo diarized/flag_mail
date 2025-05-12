@@ -1,3 +1,5 @@
 categorized_emails/archive.mbox
 categorized_emails/reply.mbox
 categorized_emails/flag.mbox
+.env.example
+.env

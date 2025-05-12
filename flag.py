@@ -12,11 +12,12 @@ MODEL_NAME = "qwen3:14b"  # Replace with the model you've loaded
 SYSTEM_PROMPT = """
 You are an assistant that helps manage emails. Based on the content of the email and the user's rules,
 decide whether to "archive", "flag", or "reply".
-Return your decision in the format: Action: <archive|flag|reply>. Reason: <brief reason>.
+Return your decision in the format: Action: <archive|important|newsletter>. Reason: <brief reason>.
 User rules:
-- Archive newsletters and notifications unless urgent
-- Flag emails that seem personal or urgent
-- Suggest replies only if there's a direct question
+- Archive notifications in 'Archives' folder unless urgent
+- If there's a direct question move the email to 'INBOX/Important'
+- Move emails that seem personal or urgent to 'INBOX/Important'
+- Flag newsletters by moving them to 'Newsletters' folder
 """
 
 def query_ollama(email_text):
