@@ -37,9 +37,8 @@ def parse_email(msg):
         for part in msg.walk():
             if part.get_content_type() == "text/plain":
                 body += part.get_payload(decode=True).decode(errors="ignore")
-    else:
-        body = msg.get_payload(decode=True).decode(errors="ignore")
     return f"From: {from_}\nSubject: {subject}\n\n{body}"
+
 
 def main(mbox_path):
     mbox = mailbox.mbox(mbox_path)
@@ -64,7 +63,6 @@ def main(mbox_path):
             if msg_dt.date() != today:
                 continue
         except Exception:
-            raise
             continue  # Skip if can't parse date
 
         print(f"\n--- Email #{i+1} ---")
