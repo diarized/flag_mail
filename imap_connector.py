@@ -220,7 +220,7 @@ class IMAPConnector:
                 return False
             
             # Mark the original email as deleted
-            status, data = self.conn.store(email_id, '+FLAGS', '(\Deleted)')
+            status, data = self.conn.store(email_id, '+FLAGS', r'(\Deleted)')
             if status != 'OK':
                 logger.error(
                     f"Failed to mark email {email_id} as deleted: {status}"
